@@ -3,6 +3,7 @@ package com.enginaar.spring.data.listener;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import com.github.javafaker.Faker;
 public class ApplicationListener {
 
 	@Autowired
+	@Qualifier("personRepository")
 	private PersonRepository persons;
 	@Autowired
 	private CityRepository cities;
@@ -33,6 +35,7 @@ public class ApplicationListener {
 	}
          
 	private void initCities() {
+            if(cities.count() > 50) return;
 		for (int i = 0; i < 50; i++) {
 			City a = new City();
 			a.setName(faker.address().city());
@@ -42,7 +45,8 @@ public class ApplicationListener {
 	}
 
 	private void initPeople() {
-		for (int i = 0; i < 1000; i++) {
+		if(persons.count() >= 1) return;
+		for (int i = 0; i < 100; i++) {
 			String name = faker.name().firstName();
 			List<Person> prsList = persons.findByName(name);
 			if(prsList.size() > 0)
