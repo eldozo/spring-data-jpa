@@ -137,4 +137,10 @@ public class PersonRepositoryImpl implements PersonRepository {
     public int countByName(String name) {
         return db.queryForObject("select count(*) from person p where p.name = ?", Integer.class, name);
     }
+
+	@Override
+	public void deleteAllById(Iterable<? extends Long> ids) {
+	 
+		
+	}
 }
